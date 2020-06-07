@@ -1,6 +1,6 @@
-Simple Binary Search Tree implementation
+Binary Search Tree implementation
 ================
-Binary Search Tree implementation in C++ with templates
+This is a simple Binary Search Tree class that I implemented in C++ with templates for my algorithms class.
 
 Contribution
 ----------
