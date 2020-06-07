@@ -234,13 +234,11 @@ template<typename Type>
 bool BST<Type>:: isBalanced(BSTNode<Type>* treeNode) {
     if (!treeNode)
         return false;
-    /*
+
     int leftHeight = getHeight(treeNode->getLeft());
     int rightHeight = getHeight(treeNode->getRight());
 
     return abs(leftHeight - rightHeight) <= 1;
-     */
-    return getHeight(treeNode->getLeft()) == getHeight(treeNode->getRight());
 }
 
 ////////////////////////////////////////////////
