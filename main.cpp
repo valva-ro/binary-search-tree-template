@@ -4,42 +4,43 @@
 int main() {
 
     BST<int>* myBST = new BST<int>();
+    int numbers[10] = {5, 10, 3, 51, 110, 4, 1, 13, 6, 20};
 
-    myBST->insert(5);
-    myBST->insert(10);
-    myBST->insert(3);
-    myBST->insert(51);
-    myBST->insert(110);
-    myBST->insert(4);
-    myBST->insert(1);
-    myBST->insert(13);
+    for (int i = 0; i < 10; i++)
+        myBST->insert(numbers[i]);
 
     cout << "____________________________________\n"
             "\n\t\t        5\n"
             "\t\t     /     \\\n"
             "\t\t    3       10\n"
-            "\t\t  /   \\      \\\n"
-            "\t\t 1     4      51\n"
+            "\t\t  /   \\    /  \\\n"
+            "\t\t 1     4  6   51\n"
             "\t\t             /  \\\n"
-            "\t\t            13   110\n\n";
+            "\t\t            13   110\n"
+            "\t\t              \\\n"
+            "\t\t               20\n\n";
     myBST->displayData();
 
     cout << "\tDeleting 10...\n";
     myBST->deleteKey(10);
     cout << "\n\t\t        5\n"
             "\t\t     /     \\\n"
-            "\t\t    3       51\n"
-            "\t\t  /   \\    /  \\\n"
-            "\t\t 1     4  13   110\n\n";
+            "\t\t    3        51\n"
+            "\t\t  /   \\     /  \\\n"
+            "\t\t 1     4   13   110\n"
+            "\t\t          /  \\\n"
+            "\t\t         6    20\n\n";
     myBST->displayData();
 
     cout << "\tDeleting 3...\n";
     myBST->deleteKey(3);
     cout << "\n\t\t        5\n"
             "\t\t     /     \\\n"
-            "\t\t    4       51\n"
-            "\t\t  /        /   \\\n"
-            "\t\t 1        13   110\n\n";
+            "\t\t    4        51\n"
+            "\t\t  /         /  \\\n"
+            "\t\t 1         13   110\n"
+            "\t\t          /  \\\n"
+            "\t\t         6    20\n\n";
     myBST->displayData();
 
     delete myBST;
