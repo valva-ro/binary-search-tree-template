@@ -194,6 +194,8 @@ void BST<Type>:: postOrder() {
 ////////////////////////////////////////////////
 template <typename Type>
 void BST<Type>:: displayData() {
+
+    cout << "\n\n\t__________________________________________\n";
     cout << "\tIn order: ";
     inOrder();
     cout << "\tPre order: ";
@@ -209,9 +211,9 @@ void BST<Type>:: displayData() {
     if (isBalanced())
         cout << "\tBST is balanced! " << "\n\n";
     else
-        cout << "\tBST is not balanced! " << "\n\n";
+        cout << "\tBST is not balanced! " << "\n";
 
-    cout << "____________________________________\n";
+    cout << "\t__________________________________________\n\n";
 }
 
 /* ------------------------------------------------------------------------------ */
