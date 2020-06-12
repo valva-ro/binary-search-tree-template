@@ -13,14 +13,16 @@ class BSTNode {
         BSTNode<Type>* right;
         BSTNode<Type>* parent;
         Type key;
+        int balanceFactor;
 
     public:
         BSTNode(Type key);
-        BSTNode(Type key, BSTNode* left, BSTNode* right);
         Type getKey();
         BSTNode<Type>* getLeft();
         BSTNode<Type>* getRight();
         BSTNode<Type>* getParent();
+        int getBalanceFactor();
+        void setBalanceFactor(int balanceFactor);
         void setKey(Type key);
         void setLeft(BSTNode<Type>* left);
         void setRight(BSTNode<Type>* right);
@@ -37,14 +39,7 @@ BSTNode<Type>:: BSTNode(Type key) {
     left = NULL;
     right = NULL;
     parent = NULL;
-}
-
-/////////////////////////////////////////////
-template <typename Type>
-BSTNode<Type>:: BSTNode(Type key, BSTNode* left, BSTNode* right) {
-    this->key = key;
-    this->left = left;
-    this->right = right;
+    balanceFactor = 0;
 }
 
 /////////////////////////////////////////////
@@ -69,6 +64,18 @@ BSTNode<Type>* BSTNode<Type>:: getRight() {
 template <typename Type>
 BSTNode<Type>* BSTNode<Type>:: getParent() {
     return parent;
+}
+
+/////////////////////////////////////////////
+template <typename Type>
+int BSTNode<Type>:: getBalanceFactor() {
+    return balanceFactor;
+}
+
+/////////////////////////////////////////////
+template <typename Type>
+void BSTNode<Type>:: setBalanceFactor(int balanceFactor) {
+    this->balanceFactor = balanceFactor;
 }
 
 /////////////////////////////////////////////
