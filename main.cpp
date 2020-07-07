@@ -2,7 +2,7 @@
 #include "BST.h"
 
 int main() {
-
+/*
     BST<int>* myBST = new BST<int>();
     int numbers[10] = {5, 10, 3, 51, 110, 4, 1, 13, 6, 20};
 
@@ -41,6 +41,14 @@ int main() {
             "\t\t 1         13   110\n"
             "\t\t          /  \\\n"
             "\t\t         6    20\n\n";
+    myBST->displayData();
+*/
+    BST<int>* myBST = new BST<int>();
+    int numbers[3] = {10, 20, 30}; //40, 50, 5, 15, 25, 35, 45};
+
+    for (int i = 0; i < 3; i++)
+        myBST->insert(numbers[i]);
+
     myBST->displayData();
 
     delete myBST;

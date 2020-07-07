@@ -1,7 +1,3 @@
-//
-// Created by valentina on 4/6/20.
-//
-
 #ifndef BINARYTREESEARCHTEMPLATE_BST_H
 #define BINARYTREESEARCHTEMPLATE_BST_H
 
@@ -17,14 +13,13 @@ class BST {
     public:
         BST();
         ~BST();
-        void insert(Type data);
+        void insert(Type key);
         int getHeight();
         BSTNode<Type>* getRoot();
         BSTNode<Type>* getMaxNode(BSTNode<Type>* treeNode);
         BSTNode<Type>* getMinNode(BSTNode<Type>* treeNode);
         void deleteKey(Type key);
         void deleteAll();
-        void balance();
         bool isBalanced();
         bool search(Type key);
         Type successor(Type key);
@@ -36,7 +31,7 @@ class BST {
 
     private:
         BSTNode<Type>* insert(BSTNode<Type>* treeNode, Type key);
-        void balance(BSTNode<Type>* treeNode);
+        BSTNode<Type>* balance(BSTNode<Type>* treeNode);
         bool isBalanced(BSTNode<Type>* treeNode);
         int getHeight(BSTNode<Type>*treeNode);
         BSTNode<Type>* deleteKey(BSTNode<Type>* treeNode, Type key);
@@ -50,7 +45,7 @@ class BST {
         void inOrder(BSTNode<Type>* treeNode);
         void preOrder(BSTNode<Type>* treeNode);
         void postOrder(BSTNode<Type>* treeNode);
-        int differenceRightLeft(BSTNode<Type>* treeNode);
+        int balanceFactor(BSTNode<Type>* treeNode);
         BSTNode<Type>* singleRightRotate(BSTNode<Type>* treeNode);
         BSTNode<Type>* singleLeftRotate(BSTNode<Type>* treeNode);
         BSTNode<Type>* doubleRightRotate(BSTNode<Type>* treeNode);
@@ -72,8 +67,9 @@ BST<Type>:: ~BST() {
 
 ////////////////////////////////////////////////
 template <typename Type>
-void BST<Type>:: insert(Type data) {
-    root = insert(root, data);
+void BST<Type>:: insert(Type key) {
+    cout << "Inserting key: " << key << "\n";
+    root = insert(root, key);
 }
 
 ////////////////////////////////////////////////
@@ -116,6 +112,7 @@ BSTNode<Type>* BST<Type>:: getMinNode(BSTNode<Type>* treeNode) {
 ////////////////////////////////////////////////
 template <typename Type>
 void BST<Type>:: deleteKey(Type key) {
+    cout << "Deleting key: " << key << "\n";
     root = deleteKey(root, key);
 }
 
@@ -123,13 +120,6 @@ void BST<Type>:: deleteKey(Type key) {
 template <typename Type>
 void BST<Type>:: deleteAll() {
     deleteAll(root);
-}
-
-////////////////////////////////////////////////
-template <typename Type>
-void BST<Type>:: balance() {
-    if (!isBalanced())
-        root = balance(root);
 }
 
 ////////////////////////////////////////////////
@@ -233,6 +223,10 @@ BSTNode<Type>* BST<Type>:: insert(BSTNode<Type>* treeNode, Type key) {
     else
         treeNode->setLeft(insert(treeNode->getLeft(), key));
 
+    treeNode->setBalanceFactor(balanceFactor(treeNode));
+    cout << "\n\tKey: " << treeNode->getKey() << " BF: " << treeNode->getBalanceFactor() << "\n";
+    treeNode = balance(treeNode);
+
     return treeNode;
 }
 
@@ -242,16 +236,25 @@ int BST<Type>:: getHeight(BSTNode<Type>* treeNode) {
     if (!treeNode)
         return 0;
 
-    int leftDepth = getHeight(treeNode->getLeft());
-    int rightDepth = getHeight(treeNode->getRight());
-
-    return 1 + max(leftDepth, rightDepth);
+    return 1 + max(getHeight(treeNode->getLeft()), getHeight(treeNode->getRight()));
 }
 
 ////////////////////////////////////////////////
 template <typename Type>
-void BST<Type>:: balance(BSTNode<Type> *treeNode) {
-    // TODO
+BSTNode<Type>* BST<Type>:: balance(BSTNode<Type> *treeNode) {
+    if (treeNode->getBalanceFactor() > 1) {
+        if (treeNode->getRight()->getBalanceFactor() > 0)
+            treeNode = singleLeftRotate(treeNode);
+        else
+            treeNode = doubleRightRotate(treeNode);
+    }
+    else if (treeNode->getBalanceFactor() < -1) {
+        if (treeNode->getLeft()->getBalanceFactor() > 0)
+            treeNode = singleRightRotate(treeNode);
+        else
+            treeNode = doubleLeftRotate(treeNode);
+    }
+    return treeNode;
 }
 
 ////////////////////////////////////////////////
@@ -304,8 +307,8 @@ BSTNode<Type>* BST<Type>:: deleteCaseTwoChilds(BSTNode<Type>* treeNode) {
 template<typename Type>
 BSTNode<Type>* BST<Type>:: deleteKey(BSTNode<Type>* treeNode, Type key) {
 
-    if (treeNode == NULL)
-        return NULL;
+    if (!treeNode)
+        return treeNode;
 
     if(treeNode->getKey() == key) {
 
@@ -325,23 +328,25 @@ BSTNode<Type>* BST<Type>:: deleteKey(BSTNode<Type>* treeNode, Type key) {
     else
         treeNode->setLeft(deleteKey(treeNode->getLeft(), key));
 
+    treeNode = balance(treeNode);
+
     return treeNode;
 }
 
 ////////////////////////////////////////////////
 template <typename Type>
 void BST<Type>:: deleteAll(BSTNode<Type>* treeNode) {
-    if(treeNode == NULL)
-        return;
-    deleteAll(treeNode->getLeft());
-    deleteAll(treeNode->getRight());
-    delete treeNode;
+    if(treeNode) {
+        deleteAll(treeNode->getLeft());
+        deleteAll(treeNode->getRight());
+        delete treeNode;
+    }
 }
 
 ////////////////////////////////////////////////
 template <typename Type>
 BSTNode<Type>* BST<Type>:: search(BSTNode<Type> *treeNode, Type key) {
-    if (treeNode == NULL || treeNode->getKey() == key)
+    if (!treeNode || treeNode->getKey() == key)
         return treeNode;
     if (key > treeNode->getKey())
         return search(treeNode->getRight(), key);
@@ -423,32 +428,38 @@ void BST<Type>:: postOrder(BSTNode<Type>* treeNode) {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 template<typename Type>
-int BST<Type>:: differenceRightLeft(BSTNode<Type> *treeNode) {
-    return (getHeight(treeNode->getRight()) - getHeight(treeNode->getRight()));
+int BST<Type>:: balanceFactor(BSTNode<Type> *treeNode) {
+    return getHeight(treeNode->getRight()) - getHeight(treeNode->getLeft());
 }
 
 ////////////////////////////////////////////////
 template <typename Type>
 BSTNode<Type>* BST<Type>:: singleRightRotate(BSTNode<Type> *treeNode) {
-    // TODO
+    BSTNode<Type>* newMiddle = treeNode->getLeft();
+    newMiddle->setRight(newMiddle->getParent());
+    return newMiddle;
 }
 
 ////////////////////////////////////////////////
 template <typename Type>
 BSTNode<Type>* BST<Type>:: singleLeftRotate(BSTNode<Type> *treeNode) {
-    // TODO
+    BSTNode<Type>* newMiddle = treeNode->getRight();
+    newMiddle->setLeft(treeNode);
+    return newMiddle;
 }
 
 ////////////////////////////////////////////////
 template <typename Type>
 BSTNode<Type>* BST<Type>:: doubleRightRotate(BSTNode<Type> *treeNode) {
-    // TODO
+    treeNode->setLeft(singleLeftRotate(treeNode->getLeft()));
+    return singleRightRotate(treeNode);
 }
 
 ////////////////////////////////////////////////
 template <typename Type>
 BSTNode<Type>* BST<Type>:: doubleLeftRotate(BSTNode<Type> *treeNode) {
-    // TODO
+    treeNode->setRight(singleRightRotate(treeNode->getRight()));
+    return singleLeftRotate(treeNode);
 }
 
 /* ------------------------------------------------------------------------------ */
