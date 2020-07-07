@@ -5,8 +5,8 @@ This is a simple Binary Search Tree class that I implemented in C++ with templat
 Contribution
 ----------
 
-- [Issue Tracker](https://github.com/valva-ro/trabajoPractico3Figuras/issues)
-- [Source Code](https://github.com/valva-ro/trabajoPractico3Figuras)
+- [Issue Tracker](https://github.com/valva-ro/binarySearchTree/issues)
+- [Source Code](https://github.com/valva-ro/binarySearchTree)
 
 
 Support
